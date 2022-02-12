@@ -24,12 +24,14 @@ import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.*
+import com.example.kotlin.areacalculator.android.AreaViewModel
 import com.example.kotlin.areacalculator.android.ContentView
 
 fun main() = singleWindowApplication(
     title = "Area Calculator",
     state = WindowState(size = DpSize(320.dp, 500.dp))
 ) {
-    ContentView()
+    val viewModel = remember { AreaViewModel() }
+    ContentView(viewModel = viewModel)
 }
 

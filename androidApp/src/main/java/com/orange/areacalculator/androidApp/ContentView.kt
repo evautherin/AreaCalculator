@@ -23,18 +23,18 @@ import kotlin.reflect.KProperty
 
 @Composable
 fun ContentView(
-    viewModel: AreaViewModel // = viewModel()
+    viewModel: AreaViewModel
 ) {
     val width by viewModel.widthFlow.collectAsState(viewModel.initialWidth)
     val height by viewModel.heightFlow.collectAsState(viewModel.initialHeight)
     val area by viewModel.areaFlow.collectAsState(viewModel.initialArea)
 
-    val setWidth = viewModel.setWidth
-    val setHeight = viewModel.setHeight
+//    val setWidth = viewModel.setWidth
+//    val setHeight = viewModel.setHeight
 
     Column() {
-        LengthView("Width", width, setWidth)
-        LengthView("Height", height, setHeight)
+        LengthView("Width", width, viewModel.setWidth)
+        LengthView("Height", height, viewModel.setHeight)
         Text(text = "Area: $area", modifier = Modifier.padding(16.dp))
     }
 }
@@ -47,7 +47,7 @@ fun LengthView(
 ) {
     Column(
 //        modifier = Modifier.padding(16.dp)
-    modifier = Modifier.width(150.dp)
+        modifier = Modifier.padding(16.dp)
     ) {
         Text(text = "$label: $value")
         Slider(value = value, valueRange = 1f..10f, onValueChange = onValueChange)

@@ -16,7 +16,7 @@ class AreaViewModel: ViewModel() {
     val setWidth = { value: Float -> logic.setWidth(value.toDouble()) }
     val setHeight = { value: Float -> logic.setHeight(value.toDouble()) }
 
-    val widthFlow = logic.widthFlow.map { value -> value.toFloat() }
-    val heightFlow = logic.heightFlow.map { value -> value.toFloat() }
-    val areaFlow = logic.areaFlow.map { value -> value.toFloat() }
+    val widthFlow = logic.widthFlow.map { it.toFloat() }
+    val heightFlow = logic.heightFlow.map { it.toFloat() }
+    val areaFlow = logic.areaFlow.map { it.toFloat() }
 }
