@@ -21,22 +21,18 @@ class ViewModel: ObservableObject {
         connect(ViewModel.logic.setHeight, with: $height)
         
         assignablePublisher(for: ViewModel.logic.areaFlowNative)
-            .map({ Double(truncating: $0) })
+            .map(KotlinDouble.toDouble)
             .assign(to: &$area)
     }
-    
-    
-    func assignablePublisher<Output, Failure, Unit>(
-        for nativeFlow: @escaping NativeFlow<Output, Failure, Unit>
-    ) -> AnyPublisher<Output, Never> where Failure : Error {
-
-        createPublisher(for: nativeFlow)
-            .catch { _ in Empty<Output, Never>() }
-            .receive(on: DispatchQueue.main)
-            .eraseToAnyPublisher()
-    }
+}
 
 
+extension KotlinDouble {
+    class func toDouble(value: KotlinDouble) -> Double { Double(truncating: value) }
+}
+
+
+extension ViewModel {
     func connect<T>(
         _ receiver: @escaping (T) -> (),
         with publisher: Published<T>.Publisher
@@ -46,14 +42,14 @@ class ViewModel: ObservableObject {
             .sink(receiveValue: receiver)
             .store(in: &subscriptions)
     }
+
+    func assignablePublisher<Output, Failure, Unit>(
+        for nativeFlow: @escaping NativeFlow<Output, Failure, Unit>
+    ) -> AnyPublisher<Output, Never> where Failure : Error {
+
+        createPublisher(for: nativeFlow)
+            .catch { _ in Empty<Output, Never>() }
+            .receive(on: DispatchQueue.main)
+            .eraseToAnyPublisher()
+    }
 }
-
-
-//func publisherDouble<Output, Failure, Unit>(
-//    for nativeFlow: @escaping NativeFlow<Output, Failure, Unit>
-//) -> AnyPublisher<Double, Never> where Failure : Error, Output: NSNumber {
-//
-//    publisher(for: nativeFlow)
-//        .map({ Double(truncating: $0) })
-//        .eraseToAnyPublisher()
-//}
