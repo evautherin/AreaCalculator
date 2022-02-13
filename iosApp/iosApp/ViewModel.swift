@@ -17,8 +17,8 @@ class ViewModel: ObservableObject {
 
     
     init() {
-        connect(ViewModel.logic.setWidth, with: $width)
-        connect(ViewModel.logic.setHeight, with: $height)
+        connect(ViewModel.logic.setWidth, withPublisher: $width)
+        connect(ViewModel.logic.setHeight, withPublisher: $height)
         
         assignablePublisher(for: ViewModel.logic.areaFlowNative)
             .map(KotlinDouble.toDouble)
@@ -33,10 +33,10 @@ extension KotlinDouble {
 
 
 extension ViewModel {
-    func connect<T>(
+    func connect<T, P: Publisher>(
         _ receiver: @escaping (T) -> (),
-        with publisher: Published<T>.Publisher
-    ) {
+        withPublisher publisher: P
+    ) where P.Output == T, P.Failure == Never {
         publisher
             .dropFirst()
             .sink(receiveValue: receiver)

@@ -2,6 +2,7 @@ package com.orange.areacalculator.shared
 
 import kotlinx.coroutines.flow.*
 
+
 class AppLogic {
 
     val areaCalculation = { width: Double, height: Double -> width*height }
